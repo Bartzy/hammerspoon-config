@@ -1,4 +1,5 @@
 local machine = require('utils.statemachine')
+local debug = require('utils.debug')
 
 local function nextValue(current, list)
     for i, v in ipairs(list) do
@@ -30,23 +31,18 @@ local shiftIsDown = false
 local flagsEventWatcher = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, function(e)
     local keyCode = e:getKeyCode()
 
-    -- hs.alert("current before processing: " .. fsm.current)
-
     if keyCode == altKeyCode then
         if not altIsDown then
             fsm:altDown()
-            -- hs.alert.show("altDown")
             altIsDown = true
         else
             fsm:altUp()
-            -- hs.alert.show("altUp")
             altIsDown = false
         end
     elseif keyCode == shiftKeyCode then
 
         if not shiftIsDown then
             fsm:shiftDown()
-            -- hs.alert.show("shiftDown")
             shiftIsDown = true
         else
             fsm:shiftUp()
@@ -57,7 +53,7 @@ local flagsEventWatcher = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}
                 local nextLayout = nextValue(currentLayout, hs.keycodes.layouts())
                 if nextLayout ~= currentLayout then
                     hs.keycodes.setLayout(nextLayout)
-                    hs.alert.show("NEW LAYOUT: " .. nextLayout)
+                    debug.alert("NEW LAYOUT: " .. nextLayout)
                 end
                 fsm:changedLayout()
 
