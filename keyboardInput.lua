@@ -23,7 +23,9 @@ local fsm = machine.create({
 }})
 
 local altKeyCode = hs.keycodes.map['alt']
+local rightAltKeyCode = hs.keycodes.map['rightalt']
 local shiftKeyCode = hs.keycodes.map['shift']
+local rightShiftKeyCode = hs.keycodes.map['rightshift']
 
 local altIsDown = false
 local shiftIsDown = false
@@ -31,7 +33,7 @@ local shiftIsDown = false
 local flagsEventWatcher = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, function(e)
     local keyCode = e:getKeyCode()
 
-    if keyCode == altKeyCode then
+    if keyCode == altKeyCode or keyCode == rightAltKeyCode then
         if not altIsDown then
             fsm:altDown()
             altIsDown = true
@@ -39,8 +41,7 @@ local flagsEventWatcher = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}
             fsm:altUp()
             altIsDown = false
         end
-    elseif keyCode == shiftKeyCode then
-
+    elseif keyCode == shiftKeyCode or keyCode == rightShiftKeyCode then
         if not shiftIsDown then
             fsm:shiftDown()
             shiftIsDown = true
